@@ -3,6 +3,9 @@ using UnityEngine;
 // Put this in Assets/Scripts (NOT Editor) and add it to the SAME object as the Animator
 // (Boss 1 / Hero). It moves the model from code, so it works even when the animation clips are flat.
 // It reads your existing Animator: the "Speed" float or "isWalking" bool, and the current state name.
+//
+// NEW: PlayScream(duration) makes the body rear back, shake while roaring, then slam forward.
+// BossPhaseScream.cs calls it automatically when the boss reaches 50% health.
 [DisallowMultipleComponent]
 public class ProceduralMotion : MonoBehaviour
 {
@@ -23,6 +26,13 @@ public class ProceduralMotion : MonoBehaviour
     public float walkLeanDegrees = 8f;
     public float walkSwayDegrees = 5f;
 
+    [Header("Run (BossAI sets runAmount from 0 to 1)")]
+    public float runBobSpeedMultiplier = 1.7f;   // steps come faster
+    public float runBobHeightMultiplier = 1.5f;  // bounces higher
+    public float runLeanDegrees = 22f;           // leans forward more (NEGATIVE if he leans backwards)
+    public float runSwayDegrees = 8f;
+    [HideInInspector] public float runAmount;    // 0 = walk, 1 = full run
+
     [Header("Attack: wind-up, strike, recover")]
     public int comboHits = 1;                 // HERO: set to 2 (matches the double combo). BOSS: 1
     [Range(0.05f, 0.9f)] public float windupEnd = 0.30f;   // part of each hit spent winding up
@@ -38,6 +48,13 @@ public class ProceduralMotion : MonoBehaviour
     [Header("Summon / skill 1")]
     public float raiseHeight = 0.6f;
     public float raiseLeanBackDegrees = 15f;
+
+    [Header("Scream (phase change)")]
+    public float screamRearDegrees = 30f;     // leans back to roar (NEGATIVE if it leans forward instead)
+    public float screamSlamDegrees = 18f;     // slams forward at the end (NEGATIVE if it goes backwards)
+    public float screamRiseHeight = 0.35f;    // body lifts up while roaring
+    public float screamShakePosition = 0.04f; // how hard the body trembles
+    public float screamShakeDegrees = 3f;
 
     [Header("Death")]
     public float deathFallDegrees = 85f;      // NEGATIVE to fall the other way
@@ -55,6 +72,19 @@ public class ProceduralMotion : MonoBehaviour
 
     Vector3 curPos;
     float curPitch, curYaw, curRoll;
+
+    float walkPhase;
+    float screamStart = -1f;
+    float screamDuration = 2f;
+
+    public bool IsScreaming { get { return screamStart >= 0f; } }
+
+    /// <summary>Start the roar pose. Call this when the boss changes phase.</summary>
+    public void PlayScream(float duration)
+    {
+        screamStart = Time.time;
+        screamDuration = Mathf.Max(0.3f, duration);
+    }
 
     void Awake()
     {
@@ -112,9 +142,59 @@ public class ProceduralMotion : MonoBehaviour
 
         if (s.IsName(dieState))
         {
+            screamStart = -1f;   // dying cancels the roar
             float k = Mathf.SmoothStep(0f, 1f, n);
             pitch = -deathFallDegrees * k;
             targetPos = new Vector3(0f, -deathSink * k, 0f);
+            sm = attackSmoothing;
+        }
+        else if (IsScreaming)
+        {
+            float t = (Time.time - screamStart) / screamDuration;
+            const float rearEnd = 0.20f, holdEnd = 0.80f, slamEnd = 0.88f;
+            float up, lean;
+
+            if (t >= 1f)
+            {
+                screamStart = -1f;
+                up = 0f; lean = 0f;
+            }
+            else if (t < rearEnd)
+            {
+                // rear back and lift the chest
+                float x = t / rearEnd;
+                float k = 1f - (1f - x) * (1f - x);
+                lean = -screamRearDegrees * k;
+                up = screamRiseHeight * k;
+            }
+            else if (t < holdEnd)
+            {
+                // hold the roar: tremble, heave the chest
+                float sh = Time.time * 45f;
+                lean = -screamRearDegrees + Mathf.Sin(Time.time * 12f) * 2f;
+                up = screamRiseHeight + Mathf.Sin(sh * 1.7f) * screamShakePosition;
+                targetPos.x = Mathf.Sin(sh * 1.3f) * screamShakePosition;
+                roll = Mathf.Sin(sh) * screamShakeDegrees;
+                yaw = Mathf.Sin(sh * 0.7f) * screamShakeDegrees * 0.5f;
+            }
+            else if (t < slamEnd)
+            {
+                // slam forward
+                float k = (t - holdEnd) / (slamEnd - holdEnd);
+                k = k * k;
+                lean = Mathf.Lerp(-screamRearDegrees, screamSlamDegrees, k);
+                up = Mathf.Lerp(screamRiseHeight, 0f, k);
+            }
+            else
+            {
+                // recover
+                float k = Mathf.SmoothStep(0f, 1f, (t - slamEnd) / (1f - slamEnd));
+                lean = Mathf.Lerp(screamSlamDegrees, 0f, k);
+                up = 0f;
+            }
+
+            targetPos.y = up;
+            pitch = lean;
             sm = attackSmoothing;
         }
         else if (IsAny(s, raiseStates))
@@ -166,10 +246,13 @@ public class ProceduralMotion : MonoBehaviour
         }
         else if (IsMoving())
         {
-            float phase = Time.time * walkBobSpeed;
-            targetPos = new Vector3(0f, Mathf.Abs(Mathf.Sin(phase)) * walkBobHeight, 0f);
-            pitch = walkLeanDegrees;
-            roll = Mathf.Sin(phase) * walkSwayDegrees;
+            float r = Mathf.Clamp01(runAmount);
+            // keep the step phase continuous so the bob doesn't jump when speeding up
+            walkPhase += Time.deltaTime * walkBobSpeed * Mathf.Lerp(1f, runBobSpeedMultiplier, r);
+            float bobH = walkBobHeight * Mathf.Lerp(1f, runBobHeightMultiplier, r);
+            targetPos = new Vector3(0f, Mathf.Abs(Mathf.Sin(walkPhase)) * bobH, 0f);
+            pitch = Mathf.Lerp(walkLeanDegrees, runLeanDegrees, r);
+            roll = Mathf.Sin(walkPhase) * Mathf.Lerp(walkSwayDegrees, runSwayDegrees, r);
         }
         else
         {

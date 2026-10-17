@@ -359,6 +359,11 @@ MonoBehaviour:
   walkBobSpeed: 8
   walkLeanDegrees: 8
   walkSwayDegrees: 5
+  runBobSpeedMultiplier: 1.7
+  runBobHeightMultiplier: 1.5
+  runLeanDegrees: 22
+  runSwayDegrees: 8
+  runAmount: 0
   comboHits: 1
   windupEnd: 0.3
   strikeEnd: 0.5
@@ -371,6 +376,11 @@ MonoBehaviour:
   attackSmoothing: 30
   raiseHeight: 0.6
   raiseLeanBackDegrees: 15
+  screamRearDegrees: 30
+  screamSlamDegrees: 18
+  screamRiseHeight: 0.35
+  screamShakePosition: 0.04
+  screamShakeDegrees: 3
   deathFallDegrees: 85
   deathSink: 0.25
   smoothing: 10
@@ -901,7 +911,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: fb9df244c48f0a446ac875dd2ae1b997, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.46
+      value: -0.272
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: fb9df244c48f0a446ac875dd2ae1b997, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1437,7 +1447,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: b05c925a727e8b34ebdbc7abdcc54170, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 8.626089
+      value: 9.43
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b05c925a727e8b34ebdbc7abdcc54170, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1535,6 +1545,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b05c925a727e8b34ebdbc7abdcc54170, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1318189335}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b05c925a727e8b34ebdbc7abdcc54170, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1318189337}
   m_SourcePrefab: {fileID: 100100000, guid: b05c925a727e8b34ebdbc7abdcc54170, type: 3}
 --- !u!1 &1318189324 stripped
 GameObject:
@@ -1556,8 +1569,18 @@ MonoBehaviour:
   bossName: Bone Warlord
   health: 500
   maxHealth: 500
+  aggroRange: 5.56
+  requireInFront: 0
+  viewAngle: 140
+  firstAttackDelay: 1.2
   moveSpeed: 3
+  walkSpeed: 1.3
+  walkDuration: 1.5
+  runRampTime: 0.6
   attackRange: 2.5
+  attackCooldown: 2
+  attackDamage: 10
+  attackHitDelay: 0.5
   skill1Interval: 10
   skill2Interval: 15
   currentState: 0
@@ -1595,7 +1618,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7539b236f74be404bb7193378b05037d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
+  target: {fileID: 132849884}
   summonTrigger: Skill1
   flameTrigger: Skill3
   minionPrefab: {fileID: 952754503}
@@ -1669,7 +1692,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1318189324}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1ed56c80e38988e45af8c95825890ad5, type: 3}
   m_Name: 
@@ -1704,6 +1727,11 @@ MonoBehaviour:
   walkBobSpeed: 8
   walkLeanDegrees: 8
   walkSwayDegrees: 5
+  runBobSpeedMultiplier: 1.7
+  runBobHeightMultiplier: 1.5
+  runLeanDegrees: 22
+  runSwayDegrees: 8
+  runAmount: 0
   comboHits: 1
   windupEnd: 0.3
   strikeEnd: 0.5
@@ -1716,6 +1744,11 @@ MonoBehaviour:
   attackSmoothing: 30
   raiseHeight: 0.6
   raiseLeanBackDegrees: 15
+  screamRearDegrees: 30
+  screamSlamDegrees: 18
+  screamRiseHeight: 0.35
+  screamShakePosition: 0.04
+  screamShakeDegrees: 3
   deathFallDegrees: 85
   deathSink: 0.25
   smoothing: 10
@@ -1745,6 +1778,42 @@ MonoBehaviour:
   maxBarDistance: 45
   lowColor: {r: 0.65, g: 0.04, b: 0.1, a: 1}
   highColor: {r: 1, g: 0.38, b: 0.12, a: 1}
+--- !u!114 &1318189337
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1318189324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09dffdbcbc44dda4fbec977d20cf4816, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  triggerAtHealthPercent: 0.5
+  autoDetectHealth: 1
+  healthFieldName: 
+  maxHealthFieldName: 
+  screamDuration: 2.2
+  screamClip: {fileID: 0}
+  screamVolume: 1
+  disableDuringScream: []
+  onScreamStart:
+    m_PersistentCalls:
+      m_Calls: []
+  onScreamEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  blueColor: {r: 0.25, g: 0.65, b: 1, a: 1}
+  burst: 1
+  shockwaveRing: 1
+  auraAfterwards: 1
+  pulseLight: 1
+  lightPeak: 5
+  lightSettle: 1.5
+  tintBody: 1
+  tintStrength: 0.45
+  cameraShake: 0.15
 --- !u!1001 &1384144250
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1767,7 +1836,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 55e5a536422e81e44b0c15141ea318eb, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 9.54
+      value: -2.83
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 55e5a536422e81e44b0c15141ea318eb, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1775,23 +1844,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 55e5a536422e81e44b0c15141ea318eb, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -7.552
+      value: -6.61
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 55e5a536422e81e44b0c15141ea318eb, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.79335415
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 55e5a536422e81e44b0c15141ea318eb, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 55e5a536422e81e44b0c15141ea318eb, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: 0.6087605
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 55e5a536422e81e44b0c15141ea318eb, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 55e5a536422e81e44b0c15141ea318eb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1799,7 +1868,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 55e5a536422e81e44b0c15141ea318eb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 75
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 55e5a536422e81e44b0c15141ea318eb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -2026,6 +2095,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1853819640}
   - component: {fileID: 1853819639}
+  - component: {fileID: 1853819641}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -2104,12 +2174,35 @@ Transform:
   m_GameObject: {fileID: 1853819638}
   serializedVersion: 2
   m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
-  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalPosition: {x: -7.26236, y: 4.978295, z: -2.9537864}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 2140379029}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!114 &1853819641
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1853819638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 3
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_LightLayerMask: 1
+  m_RenderingLayers: 1
+  m_CustomShadowLayers: 0
+  m_ShadowLayerMask: 1
+  m_ShadowRenderingLayers: 1
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
 --- !u!1001 &1872057666
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2259,12 +2352,71 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 418ec517e67e4f44b936857af4828347, type: 3}
+--- !u!1 &2140379027
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2140379029}
+  - component: {fileID: 2140379028}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2140379028
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2140379027}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c7be224ea5e4d4409cb3f8e22a5c7ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moonLight: {fileID: 1853819639}
+  moonLightColor: {r: 0.75, g: 0.82, b: 1, a: 1}
+  moonIntensity: 1.2
+  moonLightRotation: {x: 35, y: -30, z: 0}
+  ambientColor: {r: 0.25, g: 0.3, b: 0.45, a: 1}
+  fogColor: {r: 0.28, g: 0.36, b: 0.5, a: 1}
+  fogDensity: 0.015
+  skyBrightness: 0.7
+  createMoon: 1
+  moonDistance: 300
+  moonSize: 90
+  createMist: 1
+  mistHeight: 0.5
+  mistArea: {x: 60, y: 1, z: 60}
+  mistOpacity: 0.12
+--- !u!4 &2140379029
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2140379027}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 7.26236, y: -1.9782947, z: 2.9537864}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1853819640}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1041946382}
-  - {fileID: 1853819640}
   - {fileID: 1384144250}
   - {fileID: 610794782}
   - {fileID: 754158139}
@@ -2280,3 +2432,4 @@ SceneRoots:
   - {fileID: 952754502}
   - {fileID: 2092961367}
   - {fileID: 1318189323}
+  - {fileID: 2140379029}
