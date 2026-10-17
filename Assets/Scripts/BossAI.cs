@@ -1,161 +1,135 @@
 using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
+/// <summary>
+/// WAKE-UP GATE for the boss.
+/// Your boss already has BossChase (movement), BossSkills (skills) and EnemyHealth (health).
+/// This script no longer moves or attacks. It only keeps BossChase + BossSkills ASLEEP
+/// until the player comes close (or hits him), then wakes them up.
+/// Old public fields are kept so other scripts that mention BossAI still compile.
+/// </summary>
 public class BossAI : MonoBehaviour
 {
     public enum BossState { Idle, Chasing, Attacking, UsingSkill, Dead }
-    
-    [Header("Boss Info")]
+
+    [Header("Boss Info (health below just mirrors EnemyHealth)")]
     public string bossName = "Bone Warlord";
     public float health = 500f;
     public float maxHealth = 500f;
 
-    [Header("Movement")]
-    public float moveSpeed = 3f;
-    public float attackRange = 2.5f;
-    private Transform playerTransform;
+    [Header("Waiting (wake-up)")]
+    [Tooltip("He stands still until the player gets this close")]
+    public float aggroRange = 8f;
+    [Tooltip("Tick this to wake him only when you are in FRONT of him")]
+    public bool requireInFront = false;
+    [Range(10f, 360f)] public float viewAngle = 140f;
 
-    [Header("Skill Timers")]
-    public float skill1Interval = 10f;
-    public float skill2Interval = 15f;
-    private float skill1Timer;
-    private float skill2Timer;
+    [Header("Scripts kept asleep until he wakes up")]
+    public Behaviour[] sleepUntilAwake;
+    [Tooltip("Automatically puts BossChase and BossSkills to sleep")]
+    public bool autoSleepBossChase = true;
 
     [Header("Current State")]
     public BossState currentState = BossState.Idle;
 
-    private BossAnimationController animCtrl;
-    private Boss1SpecialAbility specialAbilities;
+    private Transform player;
+    private EnemyHealth eh;
+    private readonly List<Behaviour> sleepers = new List<Behaviour>();
+    private bool awake;
+    private float nextFind;
 
     void Awake()
     {
-        animCtrl = GetComponent<BossAnimationController>();
-        specialAbilities = GetComponent<Boss1SpecialAbility>();
+        eh = GetComponent<EnemyHealth>();
+        if (eh == null) eh = GetComponentInChildren<EnemyHealth>();
+
+        if (sleepUntilAwake != null)
+            foreach (var b in sleepUntilAwake)
+                if (b != null && b != this && !sleepers.Contains(b)) sleepers.Add(b);
+
+        if (autoSleepBossChase)
+        {
+            foreach (var b in GetComponents<Behaviour>())
+            {
+                if (b == null || b == this) continue;
+                string n = b.GetType().Name;
+                if ((n == "BossChase" || n == "BossSkills") && !sleepers.Contains(b)) sleepers.Add(b);
+            }
+        }
+
+        foreach (var b in sleepers) b.enabled = false;
     }
 
     void Start()
     {
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-        if (player != null) playerTransform = player.transform;
-        
-        currentState = BossState.Chasing;
+        currentState = BossState.Idle;
+        string names = "";
+        foreach (var b in sleepers) names += b.GetType().Name + " ";
+        Debug.Log("BossAI: waiting for the player (Aggro Range " + aggroRange + "). Asleep: " + names, this);
+        FindPlayer();
+    }
+
+    void FindPlayer()
+    {
+        var hero = FindObjectOfType<ShadowHeroController>();
+        if (hero != null) { player = hero.transform; return; }
+
+        GameObject go = GameObject.FindGameObjectWithTag("Player");
+        if (go != null) player = go.transform;
     }
 
     void Update()
     {
-        if (currentState == BossState.Dead) return;
-
-        UpdateTimers();
-        HandleStateLogic();
-    }
-
-    void UpdateTimers()
-    {
-        skill1Timer += Time.deltaTime;
-        skill2Timer += Time.deltaTime;
-
-        // Check if it's time for a skill
-        if (skill1Timer >= skill1Interval) {
-            StartCoroutine(ExecuteSkill(1));
-        } else if (skill2Timer >= skill2Interval) {
-            StartCoroutine(ExecuteSkill(2));
-        }
-    }
-
-    void HandleStateLogic()
-    {
-        if (playerTransform == null) return;
-
-        float distance = Vector3.Distance(transform.position, playerTransform.position);
-
-        switch (currentState)
+        if (eh != null)
         {
-            case BossState.Chasing:
-                if (distance > attackRange) {
-                    MoveTowardsPlayer();
-                } else {
-                    currentState = BossState.Attacking;
-                }
-                break;
-
-            case BossState.Attacking:
-                PerformBasicAttack();
-                if (distance > attackRange + 1f) {
-                    currentState = BossState.Chasing;
-                }
-                break;
-
-            case BossState.UsingSkill:
-                // Logic is handled by the Coroutine
-                break;
-        }
-    }
-
-    void MoveTowardsPlayer()
-    {
-        Vector3 targetPos = new Vector3(playerTransform.position.x, transform.position.y, playerTransform.position.z);
-        transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime);
-        
-        Vector3 dir = (targetPos - transform.position).normalized;
-        if (dir != Vector3.zero) {
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * 10f);
+            health = eh.CurrentHealth;
+            maxHealth = eh.maxHealth;
+            if (eh.IsDead) { currentState = BossState.Dead; return; }
         }
 
-        if (animCtrl != null) animCtrl.SetWalking(true);
-    }
+        if (awake) return;
 
-    void PerformBasicAttack()
-    {
-        if (animCtrl != null) animCtrl.TriggerAttack();
-        
-        // Small delay to match animation
-        Invoke("ApplyAttackDamage", 0.5f);
-        
-        // Go back to chasing after attack
-        Invoke("ReturnToChase", 1.5f);
-    }
-
-    void ApplyAttackDamage()
-    {
-        Collider[] hits = Physics.OverlapSphere(transform.position, attackRange);
-        foreach (var hit in hits) {
-            ShadowHeroController player = hit.GetComponent<ShadowHeroController>();
-            if (player != null) player.TakeDamage(10f, false);
-        }
-    }
-
-    void ReturnToChase() {
-        if (currentState == BossState.Attacking) currentState = BossState.Chasing;
-    }
-
-    IEnumerator ExecuteSkill(int skillNum)
-    {
-        currentState = BossState.UsingSkill;
-        if (animCtrl != null) animCtrl.TriggerAttack(); // Use attack anim for skills
-
-        if (skillNum == 1) {
-            specialAbilities?.UseSkill1();
-            skill1Timer = 0;
-        } else {
-            specialAbilities?.UseSkill2();
-            skill2Timer = 0;
+        // hitting him from far away wakes him up too
+        if (eh != null && eh.CurrentHealth < eh.maxHealth - 0.01f)
+        {
+            WakeUp("he took damage");
+            return;
         }
 
-        yield return new WaitForSeconds(2f); // Skill duration
+        if (player == null)
+        {
+            if (Time.time >= nextFind) { nextFind = Time.time + 0.5f; FindPlayer(); }
+            return;
+        }
+
+        Vector3 to = player.position - transform.position;
+        to.y = 0f;
+        float d = to.magnitude;
+
+        if (d > aggroRange) return;
+        if (requireInFront && d > 0.1f && Vector3.Angle(transform.forward, to) > viewAngle * 0.5f) return;
+
+        WakeUp("player came within " + d.ToString("F1") + " units");
+    }
+
+    void WakeUp(string reason)
+    {
+        if (awake) return;
+        awake = true;
+        Debug.Log("BossAI: WOKE UP because " + reason, this);
+        foreach (var b in sleepers) if (b != null) b.enabled = true;
         currentState = BossState.Chasing;
     }
 
+    // kept so older scripts that call it still work: it just wakes him up
     public void TakeDamage(float amount)
     {
-        health -= amount;
-        if (health <= 0) Die();
+        WakeUp("he took damage");
     }
 
-    void Die()
+    void OnDrawGizmosSelected()
     {
-        currentState = BossState.Dead;
-        if (animCtrl != null) animCtrl.TriggerDeath();
-        GameManager.Instance?.DefeatBoss();
-        Debug.Log(bossName + " has been slain!");
+        Gizmos.color = new Color(1f, 0.8f, 0f, 0.9f);
+        Gizmos.DrawWireSphere(transform.position, aggroRange);
     }
 }
