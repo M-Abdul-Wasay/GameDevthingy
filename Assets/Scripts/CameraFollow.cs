@@ -41,6 +41,12 @@ public class CameraFollow : MonoBehaviour
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
+        if (target == null)
+        {
+            var hero = FindObjectOfType<ShadowHeroController>();
+            if (hero != null) target = hero.transform;
+        }
+
         if (target != null)
         {
             Quaternion rot = Quaternion.Euler(pitch, yaw, 0f);
@@ -52,6 +58,11 @@ public class CameraFollow : MonoBehaviour
 
     void LateUpdate()
     {
+        if (target == null)
+        {
+            var hero = FindObjectOfType<ShadowHeroController>();
+            if (hero != null) target = hero.transform;
+        }
         if (target == null) return;
 
         if (Cursor.lockState == CursorLockMode.Locked)
