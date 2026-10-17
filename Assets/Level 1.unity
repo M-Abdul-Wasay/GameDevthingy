@@ -305,6 +305,75 @@ CapsuleCollider:
   m_Height: 1
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &132849892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 132849882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41a726c6c86ba8e4ea9da5b797a7ea12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mouseButton: 0
+  alternateKey: 102
+  attackTrigger: Attack
+  attackStateName: Attack
+  damage: 20
+  attackRange: 2.5
+  attackAngle: 120
+  cooldown: 0.8
+  hitPoints:
+  - 0.2
+  - 0.7
+  fallbackHitDelay: 0.4
+  minionNamePrefix: skeleton
+  minionHealth: 40
+  minionRadius: 0.8
+  minionRemoveDelay: 3
+--- !u!114 &132849893
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 132849882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdf74fce1a27af04a9042d00c28e0469, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lungeStates:
+  - Attack
+  - Skill3
+  raiseStates:
+  - Skill1
+  dieState: Die
+  idleBobHeight: 0.04
+  idleBobSpeed: 1.6
+  idleSwayDegrees: 2
+  moveThreshold: 0.1
+  walkBobHeight: 0.1
+  walkBobSpeed: 8
+  walkLeanDegrees: 8
+  walkSwayDegrees: 5
+  comboHits: 1
+  windupEnd: 0.3
+  strikeEnd: 0.5
+  windupBack: 0.35
+  windupLeanBack: 18
+  windupYaw: 25
+  lungeDistance: 0.7
+  lungeLeanDegrees: 25
+  strikeYaw: -35
+  attackSmoothing: 30
+  raiseHeight: 0.6
+  raiseLeanBackDegrees: 15
+  deathFallDegrees: 85
+  deathSink: 0.25
+  smoothing: 10
 --- !u!1 &176568053 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 99609c745c1e6f349b176cbf798adfe7, type: 3}
@@ -1061,192 +1130,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 418ec517e67e4f44b936857af4828347, type: 3}
   m_PrefabInstance: {fileID: 2092961367}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &1057912464
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: -8679921383154817045, guid: 7157f8adfa7e79048a543df627c2a6ab, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 8.25
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 7157f8adfa7e79048a543df627c2a6ab, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -2.696
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 7157f8adfa7e79048a543df627c2a6ab, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 3.0434217
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 7157f8adfa7e79048a543df627c2a6ab, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.0000016242263
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 7157f8adfa7e79048a543df627c2a6ab, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 7157f8adfa7e79048a543df627c2a6ab, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 7157f8adfa7e79048a543df627c2a6ab, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 7157f8adfa7e79048a543df627c2a6ab, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 7157f8adfa7e79048a543df627c2a6ab, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 180
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 7157f8adfa7e79048a543df627c2a6ab, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: 7157f8adfa7e79048a543df627c2a6ab, type: 3}
-      propertyPath: m_Name
-      value: Boss animation
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: 7157f8adfa7e79048a543df627c2a6ab, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3571216311673650818, guid: 7157f8adfa7e79048a543df627c2a6ab, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: bd27af3212a1c0943b7032b495834516, type: 2}
-    - target: {fileID: 5866666021909216657, guid: 7157f8adfa7e79048a543df627c2a6ab, type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 33030b1b9ee96584581c859908b49068, type: 2}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7157f8adfa7e79048a543df627c2a6ab, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1057912474}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7157f8adfa7e79048a543df627c2a6ab, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1057912473}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7157f8adfa7e79048a543df627c2a6ab, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1057912472}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7157f8adfa7e79048a543df627c2a6ab, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1057912475}
-  m_SourcePrefab: {fileID: 100100000, guid: 7157f8adfa7e79048a543df627c2a6ab, type: 3}
---- !u!1 &1057912465 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 7157f8adfa7e79048a543df627c2a6ab, type: 3}
-  m_PrefabInstance: {fileID: 1057912464}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1057912472
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1057912465}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b5917a0562b68094f88fdf66e45579be, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bossName: Bone Warlord
-  health: 500
-  maxHealth: 500
-  moveSpeed: 3
-  attackRange: 2.5
-  skill1Interval: 10
-  skill2Interval: 15
-  currentState: 0
---- !u!136 &1057912473
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1057912465}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 1
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1057912474
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1057912465}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d0a2eaf931b39f4ebf5040e746ddbce, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  walkSpeed: 2.5
-  runSpeed: 5
-  runDistance: 10
-  stopDistance: 2.5
-  aggroRange: 40
-  turnSpeed: 6
-  followGround: 1
-  wallRadius: 0.5
-  wallHeight: 1.2
---- !u!114 &1057912475
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1057912465}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7539b236f74be404bb7193378b05037d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 132849884}
-  summonTrigger: Skill1
-  flameTrigger: Skill3
-  minionPrefab: {fileID: 952754503}
-  minionsPerCast: 4
-  maxMinions: 8
-  summonRadius: 6
-  summonTriggerRange: 20
-  summonCooldown: 12
-  summonDelay: 0.8
-  summonDuration: 2.5
-  flamePrefab: {fileID: 1056378972}
-  flameRange: 12
-  flameCooldown: 6
-  flameDelay: 0.6
-  flameDuration: 2
-  flameCount: 3
-  flameSpread: 6.3
-  flameSpeed: 12
-  flameDamage: 15
-  startDelay: 2
-  decisionInterval: 1
-  turnSpeed: 8
 --- !u!1001 &1132921408
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1592,6 +1475,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -2294127700631396253, guid: b05c925a727e8b34ebdbc7abdcc54170, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.10382167
+      objectReference: {fileID: 0}
+    - target: {fileID: -2294127700631396253, guid: b05c925a727e8b34ebdbc7abdcc54170, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.027473962
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: b05c925a727e8b34ebdbc7abdcc54170, type: 3}
       propertyPath: m_Name
       value: Boss 1
@@ -1601,9 +1492,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2100000, guid: af4d62b42a4e05541bffd6187abcb958, type: 2}
     - target: {fileID: 5866666021909216657, guid: b05c925a727e8b34ebdbc7abdcc54170, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: b05c925a727e8b34ebdbc7abdcc54170, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: 33030b1b9ee96584581c859908b49068, type: 2}
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: b05c925a727e8b34ebdbc7abdcc54170, type: 3}
+      propertyPath: m_CullingMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: b05c925a727e8b34ebdbc7abdcc54170, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1620,6 +1523,18 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b05c925a727e8b34ebdbc7abdcc54170, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1318189330}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b05c925a727e8b34ebdbc7abdcc54170, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1318189331}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b05c925a727e8b34ebdbc7abdcc54170, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1318189333}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b05c925a727e8b34ebdbc7abdcc54170, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1318189334}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b05c925a727e8b34ebdbc7abdcc54170, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1318189335}
   m_SourcePrefab: {fileID: 100100000, guid: b05c925a727e8b34ebdbc7abdcc54170, type: 3}
 --- !u!1 &1318189324 stripped
 GameObject:
@@ -1726,6 +1641,110 @@ CapsuleCollider:
   m_Height: 1
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!95 &1318189331
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1318189324}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: e6ca0a4cfc535634d87e12e778b23602, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1318189333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1318189324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ed56c80e38988e45af8c95825890ad5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 200
+  bossRadius: 1.5
+  dieTrigger: Die
+  showHealthBar: 1
+--- !u!114 &1318189334
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1318189324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdf74fce1a27af04a9042d00c28e0469, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lungeStates:
+  - Attack
+  - Skill3
+  raiseStates:
+  - Skill1
+  dieState: Die
+  idleBobHeight: 0.04
+  idleBobSpeed: 1.6
+  idleSwayDegrees: 2
+  moveThreshold: 0.1
+  walkBobHeight: 0.1
+  walkBobSpeed: 8
+  walkLeanDegrees: 8
+  walkSwayDegrees: 5
+  comboHits: 1
+  windupEnd: 0.3
+  strikeEnd: 0.5
+  windupBack: 0.35
+  windupLeanBack: 18
+  windupYaw: 25
+  lungeDistance: 0.7
+  lungeLeanDegrees: 25
+  strikeYaw: -35
+  attackSmoothing: 30
+  raiseHeight: 0.6
+  raiseLeanBackDegrees: 15
+  deathFallDegrees: 85
+  deathSink: 0.25
+  smoothing: 10
+--- !u!114 &1318189335
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1318189324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df8a15f8412bdac4fbfe58b5401afaff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 200
+  isBoss: 1
+  displayName: 
+  bodyRadius: 1.5
+  dieTrigger: Die
+  destroyDelay: -1
+  showBar: 1
+  onlyShowWhenDamaged: 0
+  heightOffset: 0.5
+  barHeightOverride: 0
+  barWidth: 170
+  maxBarDistance: 45
+  lowColor: {r: 0.65, g: 0.04, b: 0.1, a: 1}
+  highColor: {r: 1, g: 0.38, b: 0.12, a: 1}
 --- !u!1001 &1384144250
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1861,6 +1880,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 55e5a536422e81e44b0c15141ea318eb, type: 3}
       insertIndex: -1
       addedObject: {fileID: 132849890}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 55e5a536422e81e44b0c15141ea318eb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 132849892}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 55e5a536422e81e44b0c15141ea318eb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 132849893}
   m_SourcePrefab: {fileID: 100100000, guid: 55e5a536422e81e44b0c15141ea318eb, type: 3}
 --- !u!1001 &1397468385
 PrefabInstance:
@@ -2252,7 +2277,6 @@ SceneRoots:
   - {fileID: 846293768}
   - {fileID: 768705349}
   - {fileID: 1132921408}
-  - {fileID: 1057912464}
   - {fileID: 952754502}
   - {fileID: 2092961367}
   - {fileID: 1318189323}

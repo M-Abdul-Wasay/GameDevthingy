@@ -8,7 +8,7 @@ using UnityEngine;
 // Put this file in Assets/Editor (replace the old one). It is a menu tool, NOT a component.
 // Select the boss's TOP object in the Hierarchy, then click Tools > Build Boss Animator.
 // It scans EVERY fbx in the boss folder for clips, so animations split over several files work.
-public static class BuildBossAnimator
+public static class LichAnimatorBuilder
 {
     const float WalkThreshold = 0.1f;
     const float RunThreshold = 3.5f;
@@ -20,7 +20,7 @@ public static class BuildBossAnimator
         public string Key { get { return path + "|" + name; } }
     }
 
-    [MenuItem("Tools/Build Boss Animator")]
+    [MenuItem("Tools/Build Lich Animator")]
     public static void Build()
     {
         var go = Selection.activeGameObject;
@@ -49,6 +49,7 @@ public static class BuildBossAnimator
         {
             string p = AssetDatabase.GUIDToAssetPath(guid);
             if (!p.ToLower().EndsWith(".fbx")) continue;
+            if (p != bossFbx) continue; // only use the selected boss's own FBX clips
             foreach (var c in AssetDatabase.LoadAllAssetsAtPath(p).OfType<AnimationClip>())
             {
                 if (c.name.StartsWith("__preview__")) continue;
@@ -62,14 +63,23 @@ public static class BuildBossAnimator
         Debug.Log("ALL clips found in " + folder + ":\n" +
                   string.Join("\n", infos.Select(i => System.IO.Path.GetFileName(i.path) + "  ->  " + Short(i.name)).ToArray()));
 
-        var idle = Find(infos, "freetime", "idle", "stand");
+        // "unsteady" is used as the idle when there is no real idle clip (swaying stand-in)
+        var idle = Find(infos, "freetime", "idle", "stand", "unsteady");
         var walk = Find(infos, "walk");
         var run = Find(infos, "run");
         var skill1 = Find(infos, "skill1", "skill01");
-        var skill3 = Find(infos, "skill3", "skill03");
+        var skill3 = Find(infos, "skill3", "skill03", "punch", "combo");
         var die = Find(infos, "die", "dead", "death");
 
         if (walk == null) walk = run; // fall back to the run clip if there is no walk clip
+
+        // Last resort: still no idle -> reuse the walk clip, frozen
+        bool frozenIdle = false;
+        if (idle == null && walk != null)
+        {
+            idle = walk;
+            frozenIdle = true;
+        }
 
         if (idle == null || walk == null)
         {
@@ -125,6 +135,7 @@ public static class BuildBossAnimator
 
         var idleState = sm.AddState("Idle");
         idleState.motion = Load(idle);
+        if (frozenIdle) idleState.speed = 0f; // freeze the walk pose as a standing idle
         var walkState = sm.AddState("Walk");
         walkState.motion = Load(walk);
         sm.defaultState = idleState;
@@ -181,7 +192,8 @@ public static class BuildBossAnimator
         animator.cullingMode = AnimatorCullingMode.AlwaysAnimate;
 
         Debug.Log("Boss controller built: " + controllerPath +
-                  "\nIdle: " + Short(idle.name) + " | Walk: " + Short(walk.name) +
+                  "\nIdle: " + Short(idle.name) + (frozenIdle ? " (frozen walk)" : "") +
+                  " | Walk: " + Short(walk.name) +
                   " | Run: " + (run != null ? Short(run.name) : "none") +
                   "\nSkill1: " + (skill1 != null ? Short(skill1.name) : "none") +
                   " | Skill3: " + (skill3 != null ? Short(skill3.name) : "none") +
