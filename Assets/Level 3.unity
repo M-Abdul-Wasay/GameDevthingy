@@ -315,6 +315,9 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3549a67b124f6b2479865944cb043085, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 1775558137}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3549a67b124f6b2479865944cb043085, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 1775558132}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3549a67b124f6b2479865944cb043085, type: 3}
       insertIndex: -1
@@ -336,7 +339,13 @@ PrefabInstance:
       addedObject: {fileID: 1775558134}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3549a67b124f6b2479865944cb043085, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 1775558135}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3549a67b124f6b2479865944cb043085, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 1775558133}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3549a67b124f6b2479865944cb043085, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1775558136}
   m_SourcePrefab: {fileID: 100100000, guid: 3549a67b124f6b2479865944cb043085, type: 3}
 --- !u!1 &571961744
 GameObject:
@@ -1225,7 +1234,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1775558124}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 41a726c6c86ba8e4ea9da5b797a7ea12, type: 3}
   m_Name: 
@@ -1260,10 +1269,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   currentHealth: 0
+  showHealthBar: 1
+  syncOtherHealthVariables: 1
+  driveOverheadBar: 1
+  hideOverheadBar: 0
+  barPosition: {x: 24, y: 24}
+  barSize: {x: 340, y: 28}
+  barLabel: HERO
   respawnTime: 3
   respawnWhereDied: 1
   fallDeathDepth: 8
   respawnInvulnerability: 2
+  effects: 1
+  timeColor: {r: 0.35, g: 0.7, b: 1, a: 1}
+  dieTrigger: Die
+  pauseOtherHeroScripts: 1
 --- !u!95 &1775558133
 Animator:
   serializedVersion: 5
@@ -1308,6 +1328,67 @@ CapsuleCollider:
   m_Height: 1
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1775558135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1775558124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 935d01fb53cd7c9418c6b004347126e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  key: 103
+  mouseButton: 1
+  damage: 15
+  finisherDamage: 35
+  range: 3
+  angle: 180
+  minionDamage: 999
+  windupTime: 0.12
+  strikeTime: 0.1
+  holdTime: 0.05
+  finisherWindupTime: 0.22
+  cooldown: 0.25
+  lungeDistance: 0.35
+  wallRadius: 0.3
+  wallHeight: 0.9
+  showSwordsAlways: 1
+  useHandBones: 1
+  shoulderOffset: {x: 0.45, y: 1, z: 0.2}
+  bladeLength: 1.1
+  customRightSword: {fileID: 0}
+  customLeftSword: {fileID: 0}
+  customSwordEuler: {x: 0, y: 0, z: 0}
+  bladeColor: {r: 0.82, g: 0.9, b: 1, a: 1}
+  trailColor: {r: 0.45, g: 0.85, b: 1, a: 1}
+  shakeAmount: 0.15
+--- !u!114 &1775558136
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1775558124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a367ecb3d4990044d86062200408b66a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1775558137
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1775558124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a367ecb3d4990044d86062200408b66a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1961648546
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1379,7 +1460,15 @@ PrefabInstance:
     - target: {fileID: 5866666021909216657, guid: ed6a25f0bef966b4cb87a1b0ba3477b4, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: d44e91bf9f04ba14b81f8b0168322a62, type: 2}
+      objectReference: {fileID: 9100000, guid: b7a75df632729774b8bb62de247738ea, type: 2}
+    - target: {fileID: 5866666021909216657, guid: ed6a25f0bef966b4cb87a1b0ba3477b4, type: 3}
+      propertyPath: m_CullingMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: ed6a25f0bef966b4cb87a1b0ba3477b4, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
