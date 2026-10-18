@@ -315,9 +315,6 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3549a67b124f6b2479865944cb043085, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1775558137}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3549a67b124f6b2479865944cb043085, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 1775558132}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3549a67b124f6b2479865944cb043085, type: 3}
       insertIndex: -1
@@ -1366,18 +1363,6 @@ MonoBehaviour:
   trailColor: {r: 0.45, g: 0.85, b: 1, a: 1}
   shakeAmount: 0.15
 --- !u!114 &1775558136
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1775558124}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a367ecb3d4990044d86062200408b66a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1775558137
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

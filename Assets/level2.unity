@@ -609,7 +609,15 @@ PrefabInstance:
     - target: {fileID: 5866666021909216657, guid: 527f9dba16f0874459fda5503bcc4748, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: 2c040b9f0aadb7546b5210bd9324af1b, type: 2}
+      objectReference: {fileID: 9100000, guid: 4f300ded4cf85184c8c05745060b2962, type: 2}
+    - target: {fileID: 5866666021909216657, guid: 527f9dba16f0874459fda5503bcc4748, type: 3}
+      propertyPath: m_CullingMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 527f9dba16f0874459fda5503bcc4748, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -632,6 +640,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 527f9dba16f0874459fda5503bcc4748, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1315705740}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 527f9dba16f0874459fda5503bcc4748, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1315705743}
   m_SourcePrefab: {fileID: 100100000, guid: 527f9dba16f0874459fda5503bcc4748, type: 3}
 --- !u!1 &1315705733 stripped
 GameObject:
@@ -687,6 +698,18 @@ MonoBehaviour:
   travelTime: 0.4
   riseTime: 0.35
   shadowSize: 1.5
+  enableEffects: 1
+  shadowColor: {r: 0.22, g: 0.05, b: 0.4, a: 1}
+  accentColor: {r: 0.65, g: 0.25, b: 1, a: 1}
+  shockwaveRadius: 5
+  shockwaveTime: 0.55
+  screenVignette: 1
+  cameraShake: 0.25
+  sinkSound: {fileID: 0}
+  riseSound: {fileID: 0}
+  arrivalBlast: 1
+  blastRadius: 4
+  blastDamage: 20
 --- !u!114 &1315705737
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -813,6 +836,35 @@ MonoBehaviour:
   minionHealth: 40
   minionRadius: 0.8
   minionRemoveDelay: 3
+--- !u!114 &1315705743
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1315705733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb530e41e77e03f47975e1b3366fc65b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  currentHealth: 0
+  showHealthBar: 0
+  syncOtherHealthVariables: 0
+  driveOverheadBar: 0
+  hideOverheadBar: 1
+  barPosition: {x: 24, y: 24}
+  barSize: {x: 340, y: 28}
+  barLabel: HERO
+  respawnTime: 3
+  respawnWhereDied: 1
+  fallDeathDepth: 8
+  respawnInvulnerability: 2
+  effects: 1
+  timeColor: {r: 0.35, g: 0.7, b: 1, a: 1}
+  dieTrigger: Die
+  pauseOtherHeroScripts: 1
 --- !u!1001 &2001000001
 PrefabInstance:
   m_ObjectHideFlags: 0
